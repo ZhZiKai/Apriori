@@ -185,10 +185,11 @@ public class AprioriTool {
 		System.out.println(currentNum);
 
 		// 输出频繁项集
-		for (int k = 1; k <= currentNum; k++) {
-			System.out.println("频繁" + k + "项集：");
+		int tempk=currentNum-1;
+//		for (int k = 1; k <= currentNum; k++) {
+			System.out.println("频繁" + tempk + "项集：");
 			for (FrequentItem i : resultItem) {
-				if (i.getLength() == k) {
+				if (i.getLength() == tempk) {
 					System.out.print("{");
 					for (String t : i.getIdArray()) {
 						System.out.print(t + ",");
@@ -197,7 +198,7 @@ public class AprioriTool {
 				}
 			}
 			System.out.println();
-		}
+//		}
 	}
 
 	/**
