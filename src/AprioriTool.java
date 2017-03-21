@@ -8,7 +8,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,31 +64,6 @@ public class AprioriTool {
 			totalGoodsIDs.add(temp);
 		}
 	}
-	
-	/**
-	 * 从文件中读取数据
-	 */
-	private void getData(List<String> datas) {
-		
-		ArrayList<String[]> dataArray = new ArrayList<String[]>();
-
-		String[] tempArray;
-		for(String str:datas){
-			tempArray = str.split(" ");
-			dataArray.add(tempArray);
-		}
-
-		String[] temp = null;
-		totalGoodsIDs = new ArrayList<>();
-		for (String[] array : dataArray) {
-			temp = new String[array.length - 1];
-			System.arraycopy(array, 1, temp, 0, array.length - 1);
-
-			// 将事务ID加入列表吧中
-			totalGoodsIDs.add(temp);
-		}
-	}
-	
 
 	/**
 	 * 判读字符数组array2是否包含于数组array1中
@@ -208,38 +182,23 @@ public class AprioriTool {
 			list = cutItem(resultContainer);
 			currentNum++;
 		}
+		System.out.println(currentNum);
 
-//		 输出频繁项集
-//		for (int k = 1; k <= currentNum; k++) {
-//			System.out.println("频繁" + k + "项集：");
-//			for (FrequentItem i : resultItem) {
-//				if (i.getLength() == k) {
-//					System.out.print("{");
-//					for (String t : i.getIdArray()) {
-//						System.out.print(t + ",");
-//					}
-//					System.out.print("},");
-//				}
-//			}
-//			System.out.println();
-//		}
-		
-		// 输出 最大的频繁项集
-	        int temp=currentNum-1;
-			System.out.println("频繁" + temp + "项集：");
-			for (FrequentItem i : resultItem) {   			 //resultItem表示所有频繁项集从 L1,L2,...,Ln
-				if (i.getLength() == temp ) {		 		 // FrequentItem (temp项)是频繁集对象
+		// 输出频繁项集
+		for (int k = 1; k <= currentNum; k++) {
+			System.out.println("频繁" + k + "项集：");
+			for (FrequentItem i : resultItem) {
+				if (i.getLength() == k) {
 					System.out.print("{");
 					for (String t : i.getIdArray()) {
-//						System.out.print(t + " ");
+						System.out.print(t + ",");
 					}
-					System.out.print("} ");
+					System.out.print("},");
 				}
 			}
 			System.out.println();
 		}
-	
-	
+	}
 
 	/**
 	 * 判断列表结果中是否已经包含此数组
@@ -383,61 +342,59 @@ public class AprioriTool {
 		// 进行连接和剪枝操作
 		computeLink();
 
-		int count1 = 0;
-		int count2 = 0;
-		ArrayList<String> childGroup1;
-		ArrayList<String> childGroup2;
-		
-		String[] group1;
-		String[] group2;
-		// 以最后一个频繁项集做关联规则的输出
-		String[] array = resultItem.get(resultItem.size() - 1).getIdArray();
-		// 子集总数，计算的时候除去自身和空集
-		int totalNum = (int) Math.pow(2, array.length);
-		String[] temp;
-		// 二进制数组，用来代表各个子集
-		int[] binaryArray;
-		// 除去头和尾部
-		for (int i = 1; i < totalNum - 1; i++) {
-			binaryArray = new int[array.length];
-			numToBinaryArray(binaryArray, i);
-
-			childGroup1 = new ArrayList<>();
-			childGroup2 = new ArrayList<>();
-			count1 = 0;
-			count2 = 0;
-			// 按照二进制位关系取出子集
-			for (int j = 0; j < binaryArray.length; j++) {
-				if (binaryArray[j] == 1) {
-					childGroup1.add(array[j]);
-				} else {
-					childGroup2.add(array[j]);
-				}
-			}
-
-			group1 = new String[childGroup1.size()];
-			group2 = new String[childGroup2.size()];
-
-			childGroup1.toArray(group1);
-			childGroup2.toArray(group2);
-
-			for (String[] a : totalGoodsIDs) {
-				if (isStrArrayContain(a, group1)) {
-					count1++;
-
-					// 在group1的条件下，统计group2的事件发生次数
-					if (isStrArrayContain(a, group2)) {
-						count2++;
-					}
-				}
-			}
-
-			// {A}-->{B}的意思为在A的情况下发生B的概率
+//		int count1 = 0;
+//		int count2 = 0;
+//		ArrayList<String> childGroup1;
+//		ArrayList<String> childGroup2;
+//		String[] group1;
+//		String[] group2;
+//		// 以最后一个频繁项集做关联规则的输出
+//		String[] array = resultItem.get(resultItem.size() - 1).getIdArray();
+//		// 子集总数，计算的时候除去自身和空集
+//		int totalNum = (int) Math.pow(2, array.length);
+//		String[] temp;
+//		// 二进制数组，用来代表各个子集
+//		int[] binaryArray;
+//		// 除去头和尾部
+//		for (int i = 1; i < totalNum - 1; i++) {
+//			binaryArray = new int[array.length];
+//			numToBinaryArray(binaryArray, i);
+//
+//			childGroup1 = new ArrayList<>();
+//			childGroup2 = new ArrayList<>();
+//			count1 = 0;
+//			count2 = 0;
+//			// 按照二进制位关系取出子集
+//			for (int j = 0; j < binaryArray.length; j++) {
+//				if (binaryArray[j] == 1) {
+//					childGroup1.add(array[j]);
+//				} else {
+//					childGroup2.add(array[j]);
+//				}
+//			}
+//
+//			group1 = new String[childGroup1.size()];
+//			group2 = new String[childGroup2.size()];
+//
+//			childGroup1.toArray(group1);
+//			childGroup2.toArray(group2);
+//
+//			for (String[] a : totalGoodsIDs) {
+//				if (isStrArrayContain(a, group1)) {
+//					count1++;
+//
+//					// 在group1的条件下，统计group2的事件发生次数
+//					if (isStrArrayContain(a, group2)) {
+//						count2++;
+//					}
+//				}
+//			}
+//
+//			// {A}-->{B}的意思为在A的情况下发生B的概率
 //			System.out.print("{");
 //			for (String s : group1) {
 //				System.out.print(s + ", ");
 //			}
-//			
 //			System.out.print("}-->");
 //			System.out.print("{");
 //			for (String s : group2) {
@@ -452,7 +409,7 @@ public class AprioriTool {
 //			} else {
 //				System.out.println("为强规则");
 //			}
-		}
+//		}
 
 	}
 

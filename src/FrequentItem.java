@@ -1,7 +1,7 @@
 /**
  * Æµ·±Ïî¼¯
  * 
- * @author lyq
+ * @author zzk
  * 
  */
 public class FrequentItem implements Comparable<FrequentItem>{
