@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * apriori算法工具类
  * 
- * @author lyq
+ * @author zzk
  * 
  */
 public class AprioriTool {
@@ -46,8 +46,11 @@ public class AprioriTool {
 			String str;
 			String[] tempArray;
 			while ((str = in.readLine()) != null) {
-				tempArray = str.split(" ");
-				dataArray.add(tempArray);
+				System.out.println(str);
+				tempArray = str.split(" ");					// tempArray 类型 String[]
+//				for(String test : tempArray)			
+//					System.out.println(test);
+				dataArray.add(tempArray);					//dataArray 类型  	ArrayList<String[]> dataArray 
 			}
 			in.close();
 		} catch (IOException e) {
@@ -110,7 +113,7 @@ public class AprioriTool {
 		HashMap<String, FrequentItem> itemMap = new HashMap<>();
 		FrequentItem tempItem;
 		// 初始列表
-		ArrayList<FrequentItem> list = new ArrayList<>();
+		ArrayList<FrequentItem> list = new ArrayList<FrequentItem>();
 		// 经过连接运算后产生的结果项集
 		resultItem = new ArrayList<>();
 		resultItemID = new ArrayList<>();
@@ -182,19 +185,32 @@ public class AprioriTool {
 			list = cutItem(resultContainer);
 			currentNum++;
 		}
-		System.out.println(currentNum);
+		
 
 		// 输出频繁项集
+		/*
+			过程中计算出来的所有频繁项集列表
+			private ArrayList<FrequentItem> resultItem;
+		 */
+		
 		int tempk=currentNum-1;
-//		for (int k = 1; k <= currentNum; k++) {
+
 			System.out.println("频繁" + tempk + "项集：");
-			for (FrequentItem i : resultItem) {
-				if (i.getLength() == tempk) {
+			for (FrequentItem i : resultItem) {																			
+				if (i.getLength() == tempk) {		
+//					System.out.println(i.getCount());
+//					System.out.println(i.getLength());
 					System.out.print("{");
-					for (String t : i.getIdArray()) {
-						System.out.print(t + ",");
+				
+//					String test[]=i.getIdArray();
+//					for (String t : test) {
+//						System.out.print(t + " ");
+//					}
+					
+					for (String t : i.getIdArray()) {  	//getIdArray方法返回 return idArray; 	类型 private String[] idArray;
+						System.out.print(t + " ");
 					}
-					System.out.print("},");
+					System.out.print("} ");
 				}
 			}
 			System.out.println();

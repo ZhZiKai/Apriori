@@ -5,10 +5,13 @@
  * 
  */
 public class FrequentItem implements Comparable<FrequentItem>{
+	
 	// 频繁项集的集合ID
 	private String[] idArray;
+	
 	// 频繁项集的支持度计数
 	private int count;
+	
 	//频繁项集的长度，1项集或是2项集，亦或是3项集
 	private int length;
 
